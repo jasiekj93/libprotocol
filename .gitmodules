@@ -1,0 +1,9 @@
+[submodule "external/etl"]
+	path = external/etl
+	url = https://github.com/ETLCPP/etl
+[submodule "make"]
+	path = make
+	url = https://github.com/jasiekj93/Stm32Make
+[submodule "external/CppUTest"]
+	path = external/CppUTest
+	url = https://github.com/jasiekj93/cpputest
