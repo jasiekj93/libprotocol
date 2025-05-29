@@ -15,4 +15,5 @@ namespace protocol
 
     bool addEscapes(etl::span<const Byte> input, etl::ivector<Byte>& output, const EscapeConfig& config);
     bool removeEscapes(etl::span<const Byte> input, etl::ivector<Byte>& output, const EscapeConfig& config);
+    etl::span<Byte>::iterator findFlag(etl::span<Byte>, Byte flag, Byte escape);
 }

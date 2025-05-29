@@ -42,6 +42,6 @@ namespace protocol
     private:
         std::shared_ptr<Transciever> transciever;
         std::shared_ptr<Observer> observer;
-        etl::circular_buffer_ext<Byte> receiveBuffer;
+        etl::vector_ext<Byte> receiveBuffer;
     };
 }

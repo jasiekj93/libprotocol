@@ -10,7 +10,7 @@
 
 #include <etl/span.h>
 #include <etl/optional.h>
-#include <etl/circular_buffer.h>
+#include <etl/vector.h>
 
 #include <libprotocol/Byte.hpp>
 
@@ -31,7 +31,7 @@ namespace protocol
 
         Packet(Type, Payload = {});
 
-        bool serialize(etl::icircular_buffer<Byte>& input) const;
+        bool serialize(etl::ivector<Byte>& input) const;
         bool operator==(const Packet& other) const;
 
         inline Payload getData() const { return payload; }

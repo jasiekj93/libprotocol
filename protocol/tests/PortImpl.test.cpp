@@ -28,11 +28,14 @@ TEST_GROUP(PortImplTest)
 
     void process(const std::shared_ptr<mock::PortUser>& sender, const std::shared_ptr<mock::PortUser>& receiver)
     {
+        int counter = 0;
+
         while(not sender->isAllDataSent or
           not receiver->isPacketReceived)
         {
             sender->sendTo(receiver.get());
             receiver->sendTo(sender.get());
+            counter++;
         }
     }
 };

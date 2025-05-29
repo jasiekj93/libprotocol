@@ -51,7 +51,7 @@ private:
     int packetSize = 0;
     unsigned long tick = 0;
 
-    etl::array<uint8_t, 10 * protocol::Packet::MAX_PACKET_SIZE> sendPool;
-    etl::array<uint8_t, 10 * protocol::Packet::MAX_PACKET_SIZE> receivePool;
-    etl::array<uint8_t, 100 * protocol::Frame::MAX_ESCAPED_FRAME_SIZE> frameReceivePool;
+    etl::array<uint8_t, protocol::Packet::MAX_PACKET_SIZE> sendPool;
+    etl::array<uint8_t, protocol::Packet::MAX_PACKET_SIZE> receivePool;
+    etl::array<uint8_t, 20 * protocol::Frame::MAX_ESCAPED_FRAME_SIZE> frameReceivePool;
 };

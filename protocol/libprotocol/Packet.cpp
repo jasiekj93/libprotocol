@@ -29,15 +29,15 @@ Packet::Packet(Type type, Payload data)
         data;
 }
 
-bool Packet::serialize(etl::icircular_buffer<Byte>& input) const
+bool Packet::serialize(etl::ivector<Byte>& input) const
 {
     if(input.available() < (MIN_SIZE + getLength()))
         return false;
 
-    input.push((Byte)type);
-    input.push((Byte)getLength());
-    input.push((Byte)(getLength() >> 8));
-    input.push(payload.begin(), payload.end());
+    input.push_back((Byte)type);
+    input.push_back((Byte)getLength());
+    input.push_back((Byte)(getLength() >> 8));
+    input.insert(input.end(), payload.begin(), payload.end());
 
     return true;
 }

@@ -69,9 +69,9 @@ void printFrame(const Frame& frame)
         << ", P/F: " << frame.isFinal() 
         << "] - SIZE = " << frame.data.size() << "\n"; 
 
-    for(auto byte : frame.data)
-        std::cout << std::hex << static_cast<int>(byte) << " ";
+    // for(auto byte : frame.data)
+    //     std::cout << std::hex << static_cast<int>(byte) << " ";
 
-    if(not frame.data.empty())
-        std::cout << std::dec << std::endl;
+    // if(not frame.data.empty())
+    //     std::cout << std::dec << std::endl;
 }

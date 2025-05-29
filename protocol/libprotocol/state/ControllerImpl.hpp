@@ -7,7 +7,7 @@
  */
 
 #include <etl/map.h>
-#include <etl/circular_buffer.h>
+#include <etl/vector.h>
 #include <etl/deque.h>
 
 #include <libprotocol/Port.hpp>
@@ -77,8 +77,8 @@ namespace protocol::state
     private:
         PhysicalLayer& physical;
         Observer& observer;
-        etl::circular_buffer_ext<uint8_t> sendBuffer;
-        etl::circular_buffer_ext<uint8_t> receiveBuffer;
+        etl::vector_ext<Byte> sendBuffer;
+        etl::vector_ext<Byte> receiveBuffer;
 
         etl::map<state::Type, std::unique_ptr<Base>, state::TYPE_COUNT> states;
         Base* currentState;

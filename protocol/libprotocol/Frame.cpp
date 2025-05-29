@@ -7,27 +7,6 @@
 
 using namespace protocol;
 
-static etl::span<Byte>::iterator findEnd(etl::span<Byte>::iterator start, etl::span<Byte>::iterator end)
-{
-    while(true)
-    {
-        auto it = std::find(start, end, Frame::END);
-
-        if(it == end or it == start)
-            return end;
-
-        if(*(etl::prev(it)) == Frame::ESC)
-        {
-            start = etl::next(it);
-            continue;
-        }
-        else 
-            return it;
-    }
-
-    return end;
-}
-
 Frame::Control::Control(Byte value) 
 {
     auto byte = etl::byte(value);
@@ -60,14 +39,21 @@ std::pair<etl::optional<Frame>, etl::span<Byte>::iterator> Frame::find(etl::span
 {
     static const EscapeConfig config = { ESC, FLAGS }; 
 
-    auto start = std::find(buffer.begin(), buffer.end(), START);
-    if(start == buffer.end())
+    if(buffer.empty())
         return { etl::nullopt, buffer.end() };
 
-    auto end = findEnd(start, buffer.end());
+    auto start = findFlag(buffer, START, ESC);
+    if(start == buffer.end())
+    {
+        return { etl::nullopt, buffer.end() };
+    }
+
+    auto end = findFlag({ start, buffer.end() }, END, ESC);
 
     if(end == buffer.end())
+    {
         return { etl::nullopt, buffer.end() };
+    }
 
     etl::vector<Byte, MAX_FRAME_SIZE> frameBuffer;
 

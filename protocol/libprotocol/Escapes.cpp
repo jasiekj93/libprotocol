@@ -2,6 +2,9 @@
 
 using namespace protocol;
 
+
+static int countEscapes(etl::span<Byte> buffer, Byte escape);
+
 static bool isEscapedChar(Byte byte, const EscapeConfig& config)
 {
     if(byte == config.escapeChar)
@@ -48,4 +51,41 @@ bool protocol::removeEscapes(etl::span<const Byte> input, etl::ivector<Byte> &ou
     }
 
     return true;
+}
+
+etl::span<Byte>::iterator protocol::findFlag(etl::span<Byte> buffer, Byte flag, Byte escape)
+{
+    auto iterator = buffer.begin();
+
+    if(*iterator == flag)
+        return iterator;
+
+    while(true)
+    {
+        iterator = std::find(etl::next(iterator), buffer.end(), flag);
+
+        if(iterator == buffer.end())
+            return buffer.end();
+        
+        if(auto escapeCount = countEscapes({ buffer.begin(), iterator }, escape); 
+            (escapeCount != 0 and (escapeCount % 2 == 1)))
+            continue;
+        else
+            return iterator;
+    }
+}
+
+static int countEscapes(etl::span<Byte> buffer, Byte escape)
+{
+    int count = 0;
+
+    for(auto it = buffer.rbegin(); it != buffer.rend(); ++it)
+    {
+        if(*it == escape)
+            count++;
+        else
+            return count;
+    }
+
+    return count;
 }

@@ -10,8 +10,8 @@ using namespace protocol::state;
 
 ControllerImpl::ControllerImpl(PhysicalLayer& physical, 
     Observer& observer, 
-    etl::span<uint8_t> sendPool, 
-    etl::span<uint8_t> receivePool, 
+    etl::span<Byte> sendPool, 
+    etl::span<Byte> receivePool, 
     const Timeouts& timeouts, 
     int maxFrameCount)
     : physical(physical)
@@ -74,7 +74,7 @@ void ControllerImpl::analyzeForPacket()
             Packet packet(result.value());
             observer.receivedPacketCallback(packet);
 
-            receiveBuffer.pop(etl::distance(span.cbegin(), iterator));
+            receiveBuffer.erase(span.cbegin(), iterator);
         }
         else
         {
@@ -93,6 +93,8 @@ void ControllerImpl::sendEnqueuedFrames()
     start();
 }
 
+#include <iostream>
+
 bool ControllerImpl::enqueueReceivedFrames()
 {
     if(receivedFrames.empty())
@@ -105,11 +107,12 @@ bool ControllerImpl::enqueueReceivedFrames()
     {
         if(receiveBuffer.available() < frame.data.size())
         {
+            std::cout << "Receive buffer overflow, size: " << receiveBuffer.available() << ", frame size: " << frame.data.size() << std::endl;
             observer.receivePoolOverflowCallback();
             return false;
         }
         else
-            receiveBuffer.push(frame.data.begin(), frame.data.end());
+            receiveBuffer.insert(receiveBuffer.end(), frame.data.begin(), frame.data.end());
     }
 
     receivedFrames.clear();
@@ -135,8 +138,8 @@ void ControllerImpl::pushAndSendNextData()
             id,
             etl::span<uint8_t>(sendBuffer.begin(), size),
             isFinal));
-            
-        sendBuffer.pop(size);
+
+        sendBuffer.erase(sendBuffer.begin(), etl::next(sendBuffer.begin(), size));
         id++;
     }
 

@@ -32,25 +32,27 @@ void PortImpl::process(etl::span<const Byte> received)
         return;
     
     if(received.size() > receiveBuffer.available())
-        receiveBuffer.pop(received.size() - receiveBuffer.available());
+    {
+        auto end = etl::next(receiveBuffer.begin(), received.size() - receiveBuffer.available());
+        receiveBuffer.erase(receiveBuffer.begin(), end);
+    }
 
-    receiveBuffer.push(received.begin(), received.end());
+    receiveBuffer.insert(receiveBuffer.end(), received.begin(), received.end());
 
     while(true)
     {
         auto span = etl::span<Byte>(receiveBuffer.begin(), receiveBuffer.end());
         auto [result, iterator] = Frame::find(span);
 
-        if(iterator == span.end())
-            return;
-
-        receiveBuffer.pop(etl::distance(span.begin(), iterator));
-        std::cout << "Wydupiono size: " << etl::distance(span.begin(), iterator) << "\n";
+        if(iterator != span.end() or result.has_value())
+            receiveBuffer.erase(receiveBuffer.begin(), iterator);
 
         if(receiveBuffer.empty())
             receiveBuffer.clear();
 
         if(result.has_value())
             controller->processFrame(result.value());
+        else
+            break;
     }
 }

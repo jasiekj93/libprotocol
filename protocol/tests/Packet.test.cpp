@@ -47,7 +47,7 @@ TEST(PacketTest, serialize)
 {
     etl::vector<Byte, 10> payload = { 0xF1, 0xF2, 0xF3, 0xF4 };
     etl::vector<Byte, 10> expected = { 0xA6, 0x04, 0x00, 0xF1, 0xF2, 0xF3, 0xF4 };
-    etl::circular_buffer<Byte, Packet::MAX_PACKET_SIZE> output;
+    etl::vector<Byte, Packet::MAX_PACKET_SIZE> output;
 
     Packet packet(0xA6, payload);
     auto result = packet.serialize(output);
