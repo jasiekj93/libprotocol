@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Tests",
+            "name": "file-sender",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/test/debug/testserial.elf",
-            "args": [],
+            "program": "${workspaceFolder}/bin/Pc64/debug/file-sender.elf",
+            "args": ["/dev/ttyUSB0"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

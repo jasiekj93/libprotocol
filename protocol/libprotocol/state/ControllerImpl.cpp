@@ -227,9 +227,6 @@ void ControllerImpl::sendConnectAck()
 
 void ControllerImpl::start()
 {
-    if(isTimerStarted)
-        return;
-
     isTimerStarted = true;
     timerTick = 0;
 }

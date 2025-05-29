@@ -1,4 +1,5 @@
 #include "PortImpl.hpp"
+#include <iostream>
 
 using namespace protocol;
 
@@ -40,17 +41,16 @@ void PortImpl::process(etl::span<const Byte> received)
         auto span = etl::span<Byte>(receiveBuffer.begin(), receiveBuffer.end());
         auto [result, iterator] = Frame::find(span);
 
-        if(result.has_value())
-        {
-            receiveBuffer.pop(etl::distance(span.begin(), iterator));
-            controller->processFrame(result.value());
-        }
-        else
-        {
-            if(receiveBuffer.empty())
-                receiveBuffer.clear();
-
+        if(iterator == span.end())
             return;
-        }
+
+        receiveBuffer.pop(etl::distance(span.begin(), iterator));
+        std::cout << "Wydupiono size: " << etl::distance(span.begin(), iterator) << "\n";
+
+        if(receiveBuffer.empty())
+            receiveBuffer.clear();
+
+        if(result.has_value())
+            controller->processFrame(result.value());
     }
 }
