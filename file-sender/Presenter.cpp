@@ -10,30 +10,32 @@ static void printFrame(const Frame& frame);
 
 void Presenter::receivedFrameCallback(state::Type type, const Frame& frame)
 {
-    std::cout << "[" << getStateName(type) << "]: "
-        << "Received ";
-    printFrame(frame);
+    std::cout << '.' << std::flush;
+    // std::cout << "[" << getStateName(type) << "]: "
+    //     << "Received ";
+    // printFrame(frame);
 }
 
 void Presenter::sentFrameCallback(state::Type type, const Frame& frame)
 {
-    std::cout << "[" << getStateName(type) << "]: "
-        << "Sent ";
-    printFrame(frame);
+    std::cout << '.' << std::flush;
+    // std::cout << "[" << getStateName(type) << "]: "
+    //     << "Sent ";
+    // printFrame(frame);
 }
 
 void Presenter::stateChangedCallback(state::Type previous, state::Type actual, bool wasError)
 {
-    std::cout << "[" << getStateName(previous) << "]: "
-        << "State changed to [" << getStateName(actual) << "]"
-        << (wasError ? " with error" : "")
-        << "\n";
+    // std::cout << "[" << getStateName(previous) << "]: "
+    //     << "State changed to [" << getStateName(actual) << "]"
+    //     << (wasError ? " with error" : "")
+    //     << "\n";
 }
 
 void Presenter::allDataSentCallback(state::Type type)
 {
-    std::cout << "[" << getStateName(type) << "]: "
-        << "All data sent\n";
+    // std::cout << "[" << getStateName(type) << "]: "
+    //     << "All data sent\n";
 }
 
 std::string getStateName(state::Type state)

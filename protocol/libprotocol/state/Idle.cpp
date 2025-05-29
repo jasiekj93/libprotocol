@@ -27,7 +27,8 @@ void Idle::notifyStateChangedFrom(Type type, bool transmissionError)
     if(type == Type::IDLE)
         return;
 
-    controller.clearInputBuffer();
+    if(transmissionError)
+        controller.clearInputBuffer();
 
     if (type == Type::SECONDARY and
         not transmissionError)

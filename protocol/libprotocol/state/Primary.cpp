@@ -25,8 +25,8 @@ void Primary::processTimer(int tick)
 
 void Primary::notifyPacketEnqueued()
 {
-    if(not controller.hasFramesToSend())
-		controller.pushAndSendNextData();
+    // if(not controller.hasFramesToSend())
+	// 	controller.pushAndSendNextData();
 }
 
 void Primary::notifyStateChangedFrom(Type type, bool transmissionError)
@@ -86,14 +86,7 @@ void Primary::processFrameReceiveReady(const protocol::Frame& frame)
 		else
 		{
             controller.notifyAllDataSent();
-			
-			if (controller.hasDataToSend())
-			{
-				if(not controller.hasFramesToSend())
-					controller.pushAndSendNextData();
-			}
-			else if(not controller.hasFramesToSend())
-				disconnect();
+            disconnect();
 		}
 	}
 }

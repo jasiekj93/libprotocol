@@ -68,6 +68,7 @@ void Handler::allDataSentCallback()
     file.read(reinterpret_cast<char*>(buffer.data()), buffer.size());
     packetSize = static_cast<int>(file.gcount());
 
+    std::cout << std::endl;
     if(packetSize <= 0)
     {
         file.close();
@@ -137,6 +138,7 @@ void Handler::runAsReceiver()
 
 void Handler::processFileHeader(const FileHeader& header)
 {
+    std::cout << std::endl;
     std::cout << "Received file header: " << header.getFileName() << std::endl;
 
     if(file.is_open())
@@ -149,6 +151,9 @@ void Handler::processFileHeader(const FileHeader& header)
 
 void Handler::processFileData(const FileData& data)
 {
+    std::cout << std::endl;
+    std::cout << "Received file data, size: " << data.getData().size() << " bytes." << std::endl;
+
     if (file.is_open())
     {
         file.write(reinterpret_cast<const char*>(data.getData().data()), data.getData().size());
@@ -163,6 +168,9 @@ void Handler::processFileData(const FileData& data)
 
 void Handler::processFileEnd(const FileEnd& end)
 {
+    std::cout << std::endl;
+    std::cout << "Received file end packet." << std::endl;
+
     if (file.is_open())
     {
         file.close();
